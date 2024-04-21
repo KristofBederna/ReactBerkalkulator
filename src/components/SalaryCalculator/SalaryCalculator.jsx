@@ -15,27 +15,19 @@ const SalaryCalculator = () => {
     setNetIncome(calculatedNetIncome);
   };
 
-  // Function to handle percentage buttons
-  const adjustGrossIncome = (percentChange) => {
-    const newGrossIncome = inputValue * (1 + percentChange / 100);
-    setGrossIncome(newGrossIncome);
-    setInputValue(newGrossIncome);
-    calculateNetIncome();
-  };
-
   // Function to handle slider change
   const handleSliderChange = (e) => {
     const sliderValue = parseFloat(e.target.value);
     setSliderPercentage(sliderValue);
-    const newGrossIncome = inputValue * (1 + sliderValue / 100);
+    const newGrossIncome = inputValue + (inputValue * sliderValue / 100);
     setGrossIncome(newGrossIncome);
-    setInputValue(newGrossIncome);
     calculateNetIncome();
   };
 
   // Function to handle slider release
   const handleSliderRelease = () => {
     setSliderPercentage(0);
+    setInputValue(grossIncome);
   };
 
   return (
@@ -57,12 +49,6 @@ const SalaryCalculator = () => {
             calculateNetIncome();
           }}
         />
-      </div>
-      <div>
-        <button onClick={() => adjustGrossIncome(-5)}>-5%</button>
-        <button onClick={() => adjustGrossIncome(-1)}>-1%</button>
-        <button onClick={() => adjustGrossIncome(1)}>+1%</button>
-        <button onClick={() => adjustGrossIncome(5)}>+5%</button>
       </div>
       <div>
         <input type="range" min="-100" max="100" value={sliderPercentage} onChange={handleSliderChange} onMouseUp={handleSliderRelease} />
