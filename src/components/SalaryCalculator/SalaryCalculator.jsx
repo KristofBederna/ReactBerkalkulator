@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import UserInfo from './components/UserInfo';
+import GrossIncomeInput from './components/GrossIncomeInput';
+import SliderInput from './components/SliderInput';
+import CheckboxForm from './components/CheckboxForm';
+import ButtonGroup from './components/PrecentileButtons';
 
 const SalaryCalculator = () => {
   const [userName, setUserName] = useState("");
@@ -30,48 +35,22 @@ const SalaryCalculator = () => {
     setInputValue(grossIncome);
   };
 
+  // Function to adjust gross income
+  const adjustGrossIncome = (percentChange) => {
+    const newGrossIncome = inputValue * (1 + percentChange / 100);
+    setGrossIncome(newGrossIncome);
+    setInputValue(newGrossIncome);
+    calculateNetIncome();
+  };
+
   return (
     <div>
       <div>{`${userName}'s net salary calculated`}</div>
-      <div>
-        <label>User's Name:</label>
-        <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
-      </div>
-      <div>
-        <label>Gross Income:</label>
-        <input
-          type="number"
-          value={grossIncome}
-          onChange={(e) => {
-            const newGross = parseFloat(e.target.value);
-            setGrossIncome(newGross);
-            setInputValue(newGross);
-            calculateNetIncome();
-          }}
-        />
-      </div>
-      <div>
-        <input type="range" min="-100" max="100" value={sliderPercentage} onChange={handleSliderChange} onMouseUp={handleSliderRelease} />
-      </div>
-      <div>
-        <form>
-          <label>
-            <input type="checkbox" /> Under 25 year old
-          </label>
-          <br />
-          <label>
-            <input type="checkbox" /> Recently married
-          </label>
-          <br />
-          <label>
-            <input type="checkbox" /> Personal tax cut
-          </label>
-          <br />
-          <label>
-            <input type="checkbox" /> Family tax cut
-          </label>
-        </form>
-      </div>
+      <UserInfo userName={userName} setUserName={setUserName} />
+      <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
+      <SliderInput sliderPercentage={sliderPercentage} handleSliderChange={handleSliderChange} handleSliderRelease={handleSliderRelease} />
+      <ButtonGroup adjustGrossIncome={adjustGrossIncome} />
+      <CheckboxForm />
       <div>Your net income: {netIncome}</div>
     </div>
   );
