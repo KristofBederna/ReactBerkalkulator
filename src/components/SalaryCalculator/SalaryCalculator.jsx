@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserInfo from './components/UserInfo';
 import GrossIncomeInput from './components/GrossIncomeInput';
 import SliderInput from './components/SliderInput';
@@ -11,12 +11,41 @@ const SalaryCalculator = () => {
   const [netIncome, setNetIncome] = useState(0);
   const [sliderPercentage, setSliderPercentage] = useState(0);
   const [inputValue, setInputValue] = useState(0);
+  const [under25Checked, setUnder25Checked] = useState(false);
+  const [personalTaxCutChecked, setPersonalTaxCutChecked] = useState(false);
 
   // Function to calculate net income
   const calculateNetIncome = () => {
-    // Your net income calculation logic here
-    // Example: let's assume net income is 90% of the gross income
-    const calculatedNetIncome = grossIncome * 0.9;
+    let calculatedNetIncome = 0;
+
+    // Calculate gross income components
+    let tbTax = grossIncome * 0.185; // TB tax
+    let szjaTax = grossIncome * 0.15; // SZJA tax
+    let netIncomeFromGross = grossIncome - tbTax - szjaTax;
+    calculatedNetIncome = netIncomeFromGross;
+
+    // Example net income calculation logic
+    if (under25Checked && (grossIncome <= 499952)) {
+      calculatedNetIncome += szjaTax;
+    } 
+    if (under25Checked && (grossIncome > 499952)) {
+      calculatedNetIncome += szjaTax;
+      szjaTax = (grossIncome-499952)*0.15;
+      calculatedNetIncome -= szjaTax;
+    }
+    if (personalTaxCutChecked) {
+      if (tbTax+szjaTax > 77300) {
+        calculatedNetIncome += 77300; // Personal tax cut
+      } else {
+        calculatedNetIncome += tbTax + szjaTax;
+      }
+    }
+    if (!under25Checked && !personalTaxCutChecked) {
+      calculatedNetIncome = netIncomeFromGross;
+    }
+
+    console.log(tbTax, szjaTax, netIncomeFromGross, calculatedNetIncome)
+
     setNetIncome(calculatedNetIncome);
   };
 
@@ -26,13 +55,13 @@ const SalaryCalculator = () => {
     setSliderPercentage(sliderValue);
     const newGrossIncome = inputValue + (inputValue * sliderValue / 100);
     setGrossIncome(newGrossIncome);
-    calculateNetIncome();
+    setInputValue(newGrossIncome);
   };
 
   // Function to handle slider release
   const handleSliderRelease = () => {
     setSliderPercentage(0);
-    setInputValue(grossIncome);
+    calculateNetIncome();
   };
 
   // Function to adjust gross income
@@ -40,8 +69,11 @@ const SalaryCalculator = () => {
     const newGrossIncome = inputValue * (1 + percentChange / 100);
     setGrossIncome(newGrossIncome);
     setInputValue(newGrossIncome);
-    calculateNetIncome();
   };
+
+  useEffect(() => {
+    calculateNetIncome();
+  }, [grossIncome, under25Checked, personalTaxCutChecked]);
 
   return (
     <div>
@@ -50,7 +82,7 @@ const SalaryCalculator = () => {
       <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
       <SliderInput sliderPercentage={sliderPercentage} handleSliderChange={handleSliderChange} handleSliderRelease={handleSliderRelease} />
       <ButtonGroup adjustGrossIncome={adjustGrossIncome} />
-      <CheckboxForm />
+      <CheckboxForm setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} />
       <div>Your net income: {netIncome}</div>
     </div>
   );
