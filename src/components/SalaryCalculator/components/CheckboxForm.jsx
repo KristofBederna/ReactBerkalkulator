@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import EligibilityStatus from './EligibilityStatus';
+import FamilyTaxCutInput from './FamilyTaxCutInput';
 
 
-const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus }) => {
+const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus, familyTaxCutChecked, setFamilyTaxCutChecked, kidsInTheFamily, setKidsInTheFamily, kidsWithBenefits, setkidsWithBenefits }) => {
   const [showModal, setShowModal] = useState(false);
   const [dateOfMarriage, setDateOfMarriage] = useState('');
 
@@ -15,6 +16,8 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMar
       setPersonalTaxCutChecked(checked);
     } else if (id === 'recentlyMarried') {
       setRecentlyMarriedChecked(checked);
+    } else if (id === 'familyTaxCut') {
+      setFamilyTaxCutChecked(checked);
     }
   };
 
@@ -63,6 +66,7 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMar
         <label>
           <input type="checkbox" id="familyTaxCut" onChange={handleCheckboxChange} /> Family tax cut
         </label>
+        {familyTaxCutChecked && <FamilyTaxCutInput kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />}
       </form>
     </div>
   );
