@@ -13,6 +13,8 @@ const SalaryCalculator = () => {
   const [inputValue, setInputValue] = useState(0);
   const [under25Checked, setUnder25Checked] = useState(false);
   const [personalTaxCutChecked, setPersonalTaxCutChecked] = useState(false);
+  const [recentlyMarriedChecked, setRecentlyMarriedChecked] = useState(false);
+  const [eligibilityStatus, setEligibilityStatus] = useState("");
 
   // Function to calculate net income
   const calculateNetIncome = () => {
@@ -27,25 +29,26 @@ const SalaryCalculator = () => {
     // Example net income calculation logic
     if (under25Checked && (grossIncome <= 499952)) {
       calculatedNetIncome += szjaTax;
-    } 
-    if (under25Checked && (grossIncome > 499952)) {
+      szjaTax = 0;
+    }
+    else if (under25Checked && (grossIncome > 499952)) {
       calculatedNetIncome += szjaTax;
-      szjaTax = (grossIncome-499952)*0.15;
+      szjaTax = (grossIncome - 499952) * 0.15;
       calculatedNetIncome -= szjaTax;
     }
     if (personalTaxCutChecked) {
-      if (tbTax+szjaTax > 77300) {
-        calculatedNetIncome += 77300; // Personal tax cut
+      if (tbTax + szjaTax > 77300) {
+        calculatedNetIncome += 77300;
       } else {
         calculatedNetIncome += tbTax + szjaTax;
       }
     }
-    if (!under25Checked && !personalTaxCutChecked) {
+    if (recentlyMarriedChecked && eligibilityStatus === "Eligible") {
+      calculatedNetIncome += 5000;
+    }
+    if (!under25Checked && !personalTaxCutChecked && !recentlyMarriedChecked) {
       calculatedNetIncome = netIncomeFromGross;
     }
-
-    console.log(tbTax, szjaTax, netIncomeFromGross, calculatedNetIncome)
-
     setNetIncome(calculatedNetIncome);
   };
 
@@ -55,12 +58,12 @@ const SalaryCalculator = () => {
     setSliderPercentage(sliderValue);
     const newGrossIncome = inputValue + (inputValue * sliderValue / 100);
     setGrossIncome(newGrossIncome);
-    setInputValue(newGrossIncome);
   };
 
   // Function to handle slider release
   const handleSliderRelease = () => {
     setSliderPercentage(0);
+    setInputValue(grossIncome);
     calculateNetIncome();
   };
 
@@ -73,7 +76,7 @@ const SalaryCalculator = () => {
 
   useEffect(() => {
     calculateNetIncome();
-  }, [grossIncome, under25Checked, personalTaxCutChecked]);
+  }, [grossIncome, under25Checked, personalTaxCutChecked, recentlyMarriedChecked]);
 
   return (
     <div>
@@ -82,7 +85,7 @@ const SalaryCalculator = () => {
       <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
       <SliderInput sliderPercentage={sliderPercentage} handleSliderChange={handleSliderChange} handleSliderRelease={handleSliderRelease} />
       <ButtonGroup adjustGrossIncome={adjustGrossIncome} />
-      <CheckboxForm setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} />
+      <CheckboxForm setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} recentlyMarried={recentlyMarriedChecked} setRecentlyMarriedChecked={setRecentlyMarriedChecked} setEligibilityStatus={setEligibilityStatus} />
       <div>Your net income: {netIncome}</div>
     </div>
   );

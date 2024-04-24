@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
+import EligibilityStatus from './EligibilityStatus';
 
-const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked }) => {
-  const [recentlyMarriedChecked, setRecentlyMarriedChecked] = useState(false);
+
+const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus }) => {
   const [showModal, setShowModal] = useState(false);
   const [dateOfMarriage, setDateOfMarriage] = useState('');
 
@@ -18,7 +19,7 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked }) => {
   };
 
   const handleOpenModal = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
     setShowModal(true);
   };
 
@@ -29,6 +30,14 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked }) => {
   const handleSaveModal = (value) => {
     setDateOfMarriage(value);
     handleCloseModal();
+    setEligibilityStatus(calculateEligibilityStatus(value));
+  };
+
+  const calculateEligibilityStatus = (date) => {
+    const twoYearsAgo = new Date();
+    twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+    const marriageDate = new Date(date);
+    return marriageDate >= twoYearsAgo ? 'Eligible' : 'Not Eligible';
   };
 
   return (
@@ -40,12 +49,12 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked }) => {
         <br />
         <label>
           <input type="checkbox" id="recentlyMarried" onChange={handleCheckboxChange} /> Recently married
-          {recentlyMarriedChecked && (
+          {recentlyMarried && (
             <button onClick={handleOpenModal}>Add date of marriage</button>
           )}
         </label>
         {showModal && <Modal handleClose={handleCloseModal} handleSave={handleSaveModal} />}
-        {dateOfMarriage && <p>Date of Marriage: {dateOfMarriage}</p>}
+        {recentlyMarried && dateOfMarriage && <EligibilityStatus dateOfMarriage={dateOfMarriage} />}
         <br />
         <label>
           <input type="checkbox" id="personalTaxCut" onChange={handleCheckboxChange} /> Personal tax cut
