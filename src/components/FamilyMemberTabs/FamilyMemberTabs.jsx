@@ -1,27 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const FamilyMemberTabs = ({ setSelectedUser }) => {
-  const [familyMembers, setFamilyMembers] = useState([{ id: 1, name: 'Member 1' }]);
-
-  const handleTabClick = (id) => {
-    setSelectedUser(id);
+const FamilyMemberTabs = ({ users, setUsers, setCurrentUser }) => {
+  class User {
+    constructor(id, userName) {
+      this.id = id;
+      this.userName = userName;
+      this.grossIncome = 0;
+      this.netIncome = 0;
+      this.sliderPercentage = 0;
+      this.inputValue = 0;
+      this.under25Checked = false;
+      this.personalTaxCutChecked = false;
+      this.recentlyMarriedChecked = false;
+      this.eligibilityStatus = "";
+      this.familyTaxCutChecked = false;
+      this.kidsInTheFamily = 0;
+      this.kidsWithBenefits = 0;
+    }
+  }
+  const addUser = () => {
+    setUsers([...users, new User(users.length + 1, `Member ${users.length + 1}`)]);
   };
 
-  const handleAddMember = () => {
-    const newMemberId = familyMembers.length + 1;
-    const newMembers = [...familyMembers, { id: newMemberId, name: `Member ${newMemberId}` }];
-    setFamilyMembers(newMembers);
-    setSelectedUser(newMemberId);
+  const handleTabClick = (user) => {
+    setCurrentUser(user);
   };
 
   return (
     <div>
-      {familyMembers.map((member) => (
-        <div key={member.id} onClick={() => handleTabClick(member.id)} style={{ cursor: 'pointer' }}>
-          {member.name}
-        </div>
-      ))}
-      <button onClick={handleAddMember}>+</button>
+      <button onClick={addUser}>+</button>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id} onClick={() => handleTabClick(user)}>
+            {user.userName}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

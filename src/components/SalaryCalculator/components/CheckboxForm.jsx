@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import EligibilityStatus from './EligibilityStatus';
 import FamilyTaxCutInput from './FamilyTaxCutInput';
 
 
-const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus, familyTaxCutChecked, setFamilyTaxCutChecked, kidsInTheFamily, setKidsInTheFamily, kidsWithBenefits, setkidsWithBenefits }) => {
+const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus, familyTaxCutChecked, setFamilyTaxCutChecked, kidsInTheFamily, setKidsInTheFamily, kidsWithBenefits, setkidsWithBenefits }) => {
   const [showModal, setShowModal] = useState(false);
   const [dateOfMarriage, setDateOfMarriage] = useState('');
 
@@ -20,6 +20,8 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMar
       setFamilyTaxCutChecked(checked);
     }
   };
+
+
 
   const handleOpenModal = (e) => {
     e.preventDefault();
@@ -47,11 +49,11 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMar
     <div>
       <form>
         <label>
-          <input type="checkbox" id="under25" onChange={handleCheckboxChange} /> Under 25 year old
+          <input type="checkbox" id="under25" checked={currentUser.under25Checked} onChange={handleCheckboxChange} /> Under 25 year old
         </label>
         <br />
         <label>
-          <input type="checkbox" id="recentlyMarried" onChange={handleCheckboxChange} /> Recently married
+          <input type="checkbox" id="recentlyMarried" checked={currentUser.recentlyMarriedChecked} onChange={handleCheckboxChange} /> Recently married
           {recentlyMarried && (
             <button onClick={handleOpenModal}>Add date of marriage</button>
           )}
@@ -60,11 +62,11 @@ const CheckboxForm = ({ setUnder25Checked, setPersonalTaxCutChecked, recentlyMar
         {recentlyMarried && dateOfMarriage && <EligibilityStatus dateOfMarriage={dateOfMarriage} />}
         <br />
         <label>
-          <input type="checkbox" id="personalTaxCut" onChange={handleCheckboxChange} /> Personal tax cut
+          <input type="checkbox" id="personalTaxCut" checked={currentUser.personalTaxCutChecked} onChange={handleCheckboxChange} /> Personal tax cut
         </label>
         <br />
         <label>
-          <input type="checkbox" id="familyTaxCut" onChange={handleCheckboxChange} /> Family tax cut
+          <input type="checkbox" id="familyTaxCut" checked={currentUser.familyTaxCutChecked} onChange={handleCheckboxChange} /> Family tax cut
         </label>
         {familyTaxCutChecked && <FamilyTaxCutInput kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />}
       </form>
