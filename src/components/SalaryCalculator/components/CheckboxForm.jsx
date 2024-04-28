@@ -42,6 +42,7 @@ const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked
     const twoYearsAgo = new Date();
     twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
     const marriageDate = new Date(date);
+    setDateOfMarriage('');
     return marriageDate >= twoYearsAgo ? 'Eligible' : 'Not Eligible';
   };
 
@@ -59,7 +60,7 @@ const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked
           )}
         </label>
         {showModal && <Modal handleClose={handleCloseModal} handleSave={handleSaveModal} />}
-        {recentlyMarried && dateOfMarriage && <EligibilityStatus dateOfMarriage={dateOfMarriage} />}
+        {recentlyMarried && currentUser.eligibilityStatus && <EligibilityStatus eligibilityStatus={currentUser.eligibilityStatus} />}
         <br />
         <label>
           <input type="checkbox" id="personalTaxCut" checked={currentUser.personalTaxCutChecked} onChange={handleCheckboxChange} /> Personal tax cut
