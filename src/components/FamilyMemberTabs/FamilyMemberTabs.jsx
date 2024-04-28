@@ -20,7 +20,7 @@ const FamilyMemberTabs = ({ users, setUsers, setCurrentUser }) => {
     }
   }
   const addUser = () => {
-    setUsers([...users, new User(users.length + 1, `Member ${users.length + 1}`)]);
+    setUsers([...users, new User(users[users.length - 1].id + 1, `Member ${users[users.length - 1].id + 1}`)]);
   };
 
   const handleTabClick = (user) => {

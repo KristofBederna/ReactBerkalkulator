@@ -37,7 +37,7 @@ const HouseholdSalaryCalculator = ({ users, setUsers, currentUser, setCurrentUse
         <FamilyMemberTabs users={users} setUsers={setUsers} setCurrentUser={setCurrentUser} />
       </header>
       <main>
-        <SalaryCalculator userName={currentUser.userName} setUserName={setUserName} netIncome={currentUser.netIncome} setNetIncome={setNetIncome} currentUser={currentUser} updateUser={updateUser} />
+        <SalaryCalculator users={users} setUsers={setUsers} userName={currentUser.userName} setUserName={setUserName} netIncome={currentUser.netIncome} setNetIncome={setNetIncome} currentUser={currentUser} setCurrentUser={setCurrentUser} updateUser={updateUser} />
         <HouseholdSummary users={users} />
       </main>
     </>

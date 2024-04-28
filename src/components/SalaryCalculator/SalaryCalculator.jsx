@@ -5,7 +5,7 @@ import SliderInput from './components/SliderInput';
 import CheckboxForm from './components/CheckboxForm';
 import ButtonGroup from './components/PrecentileButtons';
 
-const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, currentUser, updateUser }) => {
+const SalaryCalculator = ({ users, setUsers, userName, setUserName, netIncome, setNetIncome, currentUser, setCurrentUser, updateUser }) => {
   class User {
     constructor(id, userName, grossIncome, sliderPercentage, inputValue, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, eligibilityStatus, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits) {
       this.id = id;
@@ -35,18 +35,15 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
   const [kidsInTheFamily, setKidsInTheFamily] = useState(currentUser.kidsInTheFamily !== undefined ? currentUser.kidsInTheFamily : 0);
   const [kidsWithBenefits, setkidsWithBenefits] = useState(currentUser.kidsWithBenefits !== undefined ? currentUser.kidsWithBenefits : 0);
 
-  // Function to calculate net income
   const calculateNetIncome = () => {
     let calculatedNetIncome = 0;
 
-    // Calculate gross income components
-    let tbTax = grossIncome * 0.185; // TB tax
-    let szjaTax = grossIncome * 0.15; // SZJA tax
+    let tbTax = grossIncome * 0.185;
+    let szjaTax = grossIncome * 0.15;
     let taxes = tbTax + szjaTax;
     let netIncomeFromGross = grossIncome - taxes;
     calculatedNetIncome = netIncomeFromGross;
 
-    // Example net income calculation logic
     if (under25Checked && (grossIncome <= 499952)) {
       calculatedNetIncome += szjaTax;
       taxes -= szjaTax;
@@ -95,7 +92,6 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
     setNetIncome(calculatedNetIncome);
   };
 
-  // Function to handle slider change
   const handleSliderChange = (e) => {
     const sliderValue = parseFloat(e.target.value);
     setSliderPercentage(sliderValue);
@@ -103,18 +99,29 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
     setGrossIncome(newGrossIncome);
   };
 
-  // Function to handle slider release
   const handleSliderRelease = () => {
     setSliderPercentage(0);
     setInputValue(grossIncome);
     calculateNetIncome();
   };
 
-  // Function to adjust gross income
   const adjustGrossIncome = (percentChange) => {
     const newGrossIncome = inputValue * (1 + percentChange / 100);
     setGrossIncome(newGrossIncome);
     setInputValue(newGrossIncome);
+  };
+
+  const deleteUser = () => {
+    let newUsers = new Array;
+    for (let i = 0; i < currentUser.id - 1; i++) {
+      newUsers.push(users[i]);
+    }
+    for (let i = currentUser.id; i < users.length; i++) {
+      const updatedUser = new User(newUsers.length + 1, users[i].userName, users[i].grossIncome, users[i].sliderPercentage, users[i].inputValue, users[i].under25Checked, users[i].personalTaxCutChecked, users[i].recentlyMarriedChecked, users[i].eligibilityStatus, users[i].familyTaxCutChecked, users[i].kidsInTheFamily, users[i].kidsWithBenefits);
+      newUsers.push(updatedUser);
+    }
+    setUsers(newUsers);
+    setCurrentUser(users[0]);
   };
 
   useEffect(() => {
@@ -142,6 +149,7 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
 
   return (
     <div>
+      <button onClick={deleteUser}>Delete user</button>
       <div>{`${userName}'s net salary calculated`}</div>
       <UserInfo userName={userName} setUserName={setUserName} />
       <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
