@@ -9,7 +9,6 @@ const FamilyMemberTabs = ({ users, setUsers, setCurrentUser }) => {
       this.netIncome = 0;
       this.sliderPercentage = 0;
       this.inputValue = 0;
-      this.taxes = 0;
       this.under25Checked = false;
       this.personalTaxCutChecked = false;
       this.recentlyMarriedChecked = false;
