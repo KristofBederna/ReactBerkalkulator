@@ -12,6 +12,7 @@ const HouseholdSalaryCalculator = ({ users, setUsers, currentUser, setCurrentUse
       this.netIncome = netIncome;
       this.sliderPercentage = currentUser.sliderPercentage;
       this.inputValue = currentUser.inputValue;
+      this.taxes = currentUser.taxes;
       this.under25Checked = currentUser.under25Checked;
       this.personalTaxCutChecked = currentUser.personalTaxCutChecked;
       this.recentlyMarriedChecked = currentUser.recentlyMarriedChecked;
@@ -37,7 +38,7 @@ const HouseholdSalaryCalculator = ({ users, setUsers, currentUser, setCurrentUse
       </header>
       <main>
         <SalaryCalculator userName={currentUser.userName} setUserName={setUserName} netIncome={currentUser.netIncome} setNetIncome={setNetIncome} currentUser={currentUser} updateUser={updateUser} />
-        <HouseholdSummary />
+        <HouseholdSummary users={users} />
       </main>
     </>
   );

@@ -49,7 +49,7 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
     // Example net income calculation logic
     if (under25Checked && (grossIncome <= 499952)) {
       calculatedNetIncome += szjaTax;
-      taxes - szjaTax;
+      taxes -= szjaTax;
       szjaTax = 0;
     }
     else if (under25Checked && (grossIncome > 499952)) {
@@ -65,6 +65,7 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
         taxes -= 77300;
       } else {
         calculatedNetIncome += taxes;
+        taxes = 0;
       }
     }
     if (recentlyMarriedChecked && eligibilityStatus === "Eligible") {
@@ -76,12 +77,15 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
           break;
         case 1:
           calculatedNetIncome += Math.min(10000 * kidsInTheFamily, taxes);
+          taxes -= Math.min(10000 * kidsInTheFamily, taxes);
           break;
         case 2:
           calculatedNetIncome += Math.min(20000 * kidsInTheFamily, taxes);
+          taxes -= Math.min(20000 * kidsInTheFamily, taxes);
           break;
         default:
           calculatedNetIncome += Math.min(33000 * kidsInTheFamily, taxes);
+          taxes -= Math.min(33000 * kidsInTheFamily, taxes);
           break;
       }
     }
@@ -115,7 +119,7 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
 
   useEffect(() => {
     calculateNetIncome();
-  }, [grossIncome, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits]);
+  }, [grossIncome, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, eligibilityStatus, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits]);
 
   useEffect(() => {
     const newUser = new User(currentUser.id, userName, grossIncome, sliderPercentage, inputValue, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, eligibilityStatus, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits)
@@ -143,7 +147,7 @@ const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, curr
       <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
       <SliderInput sliderPercentage={sliderPercentage} handleSliderChange={handleSliderChange} handleSliderRelease={handleSliderRelease} />
       <ButtonGroup adjustGrossIncome={adjustGrossIncome} />
-      <CheckboxForm currentUser={currentUser} setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} recentlyMarried={recentlyMarriedChecked} setRecentlyMarriedChecked={setRecentlyMarriedChecked} setEligibilityStatus={setEligibilityStatus} familyTaxCutChecked={familyTaxCutChecked} setFamilyTaxCutChecked={setFamilyTaxCutChecked} kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />
+      <CheckboxForm currentUser={currentUser} setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} recentlyMarried={recentlyMarriedChecked} setRecentlyMarriedChecked={setRecentlyMarriedChecked} eligibilityStatus={eligibilityStatus} setEligibilityStatus={setEligibilityStatus} familyTaxCutChecked={familyTaxCutChecked} setFamilyTaxCutChecked={setFamilyTaxCutChecked} kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />
       <div>Your net income: {netIncome}</div>
     </div>
   );

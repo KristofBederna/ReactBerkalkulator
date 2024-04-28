@@ -4,7 +4,7 @@ import EligibilityStatus from './EligibilityStatus';
 import FamilyTaxCutInput from './FamilyTaxCutInput';
 
 
-const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, setEligibilityStatus, familyTaxCutChecked, setFamilyTaxCutChecked, kidsInTheFamily, setKidsInTheFamily, kidsWithBenefits, setkidsWithBenefits }) => {
+const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked, recentlyMarried, setRecentlyMarriedChecked, eligibilityStatus, setEligibilityStatus, familyTaxCutChecked, setFamilyTaxCutChecked, kidsInTheFamily, setKidsInTheFamily, kidsWithBenefits, setkidsWithBenefits }) => {
   const [showModal, setShowModal] = useState(false);
   const [dateOfMarriage, setDateOfMarriage] = useState('');
 
@@ -46,8 +46,8 @@ const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked
   };
 
   return (
-    <div>
-      <form>
+    <div className='checkbox-div'>
+      <form className='checkbox-form'>
         <label>
           <input type="checkbox" id="under25" checked={currentUser.under25Checked} onChange={handleCheckboxChange} /> Under 25 year old
         </label>
@@ -59,7 +59,7 @@ const CheckboxForm = ({ currentUser, setUnder25Checked, setPersonalTaxCutChecked
           )}
         </label>
         {showModal && <Modal handleClose={handleCloseModal} handleSave={handleSaveModal} />}
-        {recentlyMarried && dateOfMarriage && <EligibilityStatus dateOfMarriage={dateOfMarriage} />}
+        {recentlyMarried && eligibilityStatus && <EligibilityStatus eligibilityStatus={eligibilityStatus} />}
         <br />
         <label>
           <input type="checkbox" id="personalTaxCut" checked={currentUser.personalTaxCutChecked} onChange={handleCheckboxChange} /> Personal tax cut

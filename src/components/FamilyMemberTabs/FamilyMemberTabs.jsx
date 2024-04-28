@@ -9,6 +9,7 @@ const FamilyMemberTabs = ({ users, setUsers, setCurrentUser }) => {
       this.netIncome = 0;
       this.sliderPercentage = 0;
       this.inputValue = 0;
+      this.taxes = 0;
       this.under25Checked = false;
       this.personalTaxCutChecked = false;
       this.recentlyMarriedChecked = false;
@@ -28,13 +29,13 @@ const FamilyMemberTabs = ({ users, setUsers, setCurrentUser }) => {
 
   return (
     <div>
-      <button onClick={addUser}>+</button>
-      <ul>
+      <ul className='family-member-list'>
         {users.map((user) => (
           <li key={user.id} onClick={() => handleTabClick(user)}>
             {user.userName}
           </li>
         ))}
+        <button onClick={addUser}>+</button>
       </ul>
     </div>
   );

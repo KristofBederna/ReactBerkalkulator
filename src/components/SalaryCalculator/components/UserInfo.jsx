@@ -2,8 +2,8 @@ import React from 'react';
 
 const UserInfo = ({ userName, setUserName }) => {
   return (
-    <div>
-      <label>User's Name:</label>
+    <div className='user-info'>
+      <label>Username:</label>
       <input type="text" value={userName} onChange={(e) => { setUserName(e.target.value) }} />
     </div>
   );

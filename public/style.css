@@ -1,3 +1,6 @@
+/* index.css */
+
+/* Reset default browser styles */
 body,
 h1,
 h2,
@@ -13,6 +16,7 @@ table {
   box-sizing: border-box;
 }
 
+/* Basic styles */
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f8f8;
@@ -105,49 +109,4 @@ table td {
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-
-.family-member-list {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.family-member-list li {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-right: 10px;
-}
-
-.family-member-list li:hover {
-  background-color: #f0f0f0;
-}
-
-.button-group button {
-  margin-right: 10px;
-}
-
-.button-group button:last-child {
-  margin-right: 0;
-}
-
-.checkbox-form {
-  margin-top: 10px;
-}
-
-.checkbox-form label {
-  margin-top: 10px;
-}
-
-.slider {
-  display: flex;
-  margin: 10px;
-}
-
-.summary {
-  margin-top: 20px;
-}
-
-.user-info {
-  margin-top: 10px;
 }
