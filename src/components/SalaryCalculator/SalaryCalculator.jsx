@@ -5,13 +5,13 @@ import SliderInput from './components/SliderInput';
 import CheckboxForm from './components/CheckboxForm';
 import ButtonGroup from './components/PrecentileButtons';
 
-const SalaryCalculator = ({ currentUser, updateUser }) => {
+const SalaryCalculator = ({ userName, setUserName, netIncome, setNetIncome, currentUser, updateUser }) => {
   class User {
-    constructor(id, userName, grossIncome, netIncome, sliderPercentage, inputValue, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, eligibilityStatus, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits) {
+    constructor(id, userName, grossIncome, sliderPercentage, inputValue, under25Checked, personalTaxCutChecked, recentlyMarriedChecked, eligibilityStatus, familyTaxCutChecked, kidsInTheFamily, kidsWithBenefits) {
       this.id = id;
       this.userName = userName;
       this.grossIncome = grossIncome;
-      this.netIncome = netIncome;
+      this.netIncome = currentUser.netIncome;
       this.sliderPercentage = sliderPercentage;
       this.inputValue = inputValue;
       this.under25Checked = under25Checked;
@@ -24,9 +24,7 @@ const SalaryCalculator = ({ currentUser, updateUser }) => {
     }
   }
 
-  const [userName, setUserName] = useState(currentUser.userName);
   const [grossIncome, setGrossIncome] = useState(currentUser.grossIncome);
-  const [netIncome, setNetIncome] = useState(currentUser.netIncome);
   const [sliderPercentage, setSliderPercentage] = useState(currentUser.sliderPercentage);
   const [inputValue, setInputValue] = useState(currentUser.inputValue);
   const [under25Checked, setUnder25Checked] = useState(currentUser.under25Checked);
@@ -145,7 +143,7 @@ const SalaryCalculator = ({ currentUser, updateUser }) => {
       <GrossIncomeInput grossIncome={grossIncome} setGrossIncome={setGrossIncome} setInputValue={setInputValue} calculateNetIncome={calculateNetIncome} />
       <SliderInput sliderPercentage={sliderPercentage} handleSliderChange={handleSliderChange} handleSliderRelease={handleSliderRelease} />
       <ButtonGroup adjustGrossIncome={adjustGrossIncome} />
-      <CheckboxForm currentUser={currentUser} updateUser={updateUser} setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} recentlyMarried={recentlyMarriedChecked} setRecentlyMarriedChecked={setRecentlyMarriedChecked} setEligibilityStatus={setEligibilityStatus} familyTaxCutChecked={familyTaxCutChecked} setFamilyTaxCutChecked={setFamilyTaxCutChecked} kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />
+      <CheckboxForm currentUser={currentUser} setUnder25Checked={setUnder25Checked} setPersonalTaxCutChecked={setPersonalTaxCutChecked} recentlyMarried={recentlyMarriedChecked} setRecentlyMarriedChecked={setRecentlyMarriedChecked} setEligibilityStatus={setEligibilityStatus} familyTaxCutChecked={familyTaxCutChecked} setFamilyTaxCutChecked={setFamilyTaxCutChecked} kidsInTheFamily={kidsInTheFamily} setKidsInTheFamily={setKidsInTheFamily} kidsWithBenefits={kidsWithBenefits} setkidsWithBenefits={setkidsWithBenefits} />
       <div>Your net income: {netIncome}</div>
     </div>
   );
